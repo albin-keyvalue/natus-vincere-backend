@@ -1,9 +1,11 @@
 const service = require('./service/index.js');
 const express = require('express')
+var cors = require('cors')
 
 const app = express()
 const port = 9090
 
+app.use(cors())
 
 app.get('/combinations', async (req, res) => {
 	var response = null
