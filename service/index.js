@@ -13,16 +13,17 @@ async function getTopRecommendation(color, gender) {
     console.log(recommendedColors)
     const combo = []
     for (let i = 0; i < recommendedColors.length; i++) {
-        const bottom = await getItem(recommendedColors[i].bottom, gender, BOTTOM)
-        const shoe = await getItem(recommendedColors[i].shoes, gender, SHOES)
+        const bottom = await getItem(recommendedColors[i].bottom, gender, BOTTOM, i)
+        const shoe = await getItem(recommendedColors[i].shoes, gender, SHOES, i)
+        const accessory = await getAccessory(gender, i)
         console.log(recommendedColors[i].bottom + bottom + recommendedColors[i].shoes + shoe)
         combo.push({
             id: i,
-            combination: [bottom, shoe]
+            combination: [bottom, shoe, accessory]
         })
         console.log({
             id: i,
-            combination: [bottom, shoe]
+            combination: [bottom, shoe, accessory]
         })      
     }
     return combo
@@ -33,16 +34,17 @@ async function getBottomRecommendation(color, gender) {
     console.log(recommendedColors)
     const combo = []
     for (let i = 0; i < recommendedColors.length; i++) {
-        const top = await getItem(recommendedColors[i].bottom, gender, TOP)
-        const shoe = await getItem(recommendedColors[i].shoes, gender, SHOE)
+        const top = await getItem(recommendedColors[i].bottom, gender, TOP, i)
+        const shoe = await getItem(recommendedColors[i].shoes, gender, SHOE, i)
+        const accessory = await getAccessory(gender, i)
         console.log(recommendedColors[i].top + top + recommendedColors[i].shoes + shoe)
         combo.push({
             id: i,
-            combination: [top, shoe]
+            combination: [top, shoe, accessory]
         })
         console.log({
             id: i,
-            combination: [top, shoe]
+            combination: [top, shoe, accessory]
         })
     }
     return combo
@@ -53,23 +55,29 @@ async function getShoeRecommendation(color, gender) {
     console.log(recommendedColors)
     const combo = []
     for (let i = 0; i < recommendedColors.length; i++) {
-        const top = await getItem(recommendedColors[i].bottom, gender, TOP)
-        const bottom = await getItem(recommendedColors[i].shoes, gender, BOTTOM)
+        const top = await getItem(recommendedColors[i].bottom, gender, TOP, i)
+        const bottom = await getItem(recommendedColors[i].shoes, gender, BOTTOM, i)
+        const accessory = await getAccessory(gender, i)
         console.log(recommendedColors[i].bottom + top + recommendedColors[i].bottom + bottom)
         combo.push({
             id: i,
-            combination: [top, bottom]
+            combination: [top, bottom, accessory]
         })
         console.log({
             id: i,
-            combination: [top, bottom]
+            combination: [top, bottom, accessory]
         }) 
     }
     return combo
 }
 
-async function getItem(color, gender, type) {
-    const res = await db.query(`select * from public.item i where i.color = $1 and gender = $2 and "type" = $3 limit 1;`, [color, gender, type])
+async function getItem(color, gender, type, offset) {
+    const res = await db.query(`select * from public.item i where i.color = $1 and gender = $2 and "type" = $3 limit 1 offset $4;`, [color, gender, type, offset])
+    return res.rows[0]
+}
+
+async function getAccessory(gender, offset) {
+    const res = await db.query(`select * from public.item i where gender = $1 and "type" = 'accessory' limit 1 offset $2;`, [gender, offset])
     return res.rows[0]
 }
 
