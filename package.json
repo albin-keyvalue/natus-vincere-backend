@@ -17,6 +17,7 @@
   },
   "homepage": "https://github.com/albin-keyvalue/natus-vincere-backend#readme",
   "dependencies": {
-    "express": "^4.18.1"
+    "express": "^4.18.1",
+    "pg": "^8.8.0"
   }
 }
