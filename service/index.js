@@ -55,8 +55,8 @@ async function getShoeRecommendation(color, gender) {
     console.log(recommendedColors)
     const combo = []
     for (let i = 0; i < recommendedColors.length; i++) {
-        const top = await getItem(recommendedColors[i].bottom, gender, TOP, i)
-        const bottom = await getItem(recommendedColors[i].shoes, gender, BOTTOM, i)
+        const top = await getItem(recommendedColors[i].top, gender, TOP, i)
+        const bottom = await getItem(recommendedColors[i].bottom, gender, BOTTOM, i)
         const accessory = await getAccessory(gender, i)
         console.log(recommendedColors[i].bottom + top + recommendedColors[i].bottom + bottom)
         combo.push({

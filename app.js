@@ -9,11 +9,11 @@ app.use(cors())
 
 app.get('/combinations', async (req, res) => {
 	var response = null
-	if (req.query.type == 'top') 
+	if (req.query.type == 'top' || req.query.type == 'shirt' || req.query.type == 'casual-shirt' || req.query.type == 't-shirt') 
 		response = await service.getTopRecommendation(req.query.color, req.query.gender)
-	else if (req.query.type == 'bottom')
+	else if (req.query.type == 'bottom' || req.query.type == 'jeans')
 		response = await service.getBottomRecommendation(req.query.color, req.query.gender)
-	else if (req.query.type == 'shoes')
+	else if (req.query.type == 'shoes'  || req.query.type == 'heels')
 		response = await service.getShoeRecommendation(req.query.color, req.query.gender)
 	res.send(response)
 })
